@@ -3,7 +3,11 @@ session_start();
 require_once "config/koneksi.php";
 require_once "config/functions.php";
 
-ensureGuest();
+if (isset($_SESSION['id_user'])) {
+    if ($_SESSION['role'] === 'admin') redirect('admin/dashboard.php');
+    redirect('user/dashboard.php');
+}
+
 updateExpiredReservations($pdo);
 
 $error = "";
@@ -19,27 +23,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = "Email dan password wajib diisi.";
         } else {
             $stmt = $pdo->prepare("
-                SELECT id, name, email, password, role
+                SELECT id_user, nama_lengkap, email, password, role
                 FROM users
                 WHERE email = ?
                 AND is_deleted = 0
                 LIMIT 1
             ");
-            $stmt->execute(array($email));
+            $stmt->execute([$email]);
             $user = $stmt->fetch();
 
             if ($user && password_verify($password, $user['password'])) {
                 session_regenerate_id(true);
 
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['name'] = $user['name'];
-                $_SESSION['email'] = $user['email'];
-                $_SESSION['role'] = $user['role'];
+                $_SESSION['id_user'] = $user['id_user'];
+                $_SESSION['nama']    = $user['nama_lengkap'];
+                $_SESSION['email']   = $user['email'];
+                $_SESSION['role']    = $user['role'];
 
                 if ($user['role'] === 'admin') {
                     redirect('admin/dashboard.php');
                 }
-
                 redirect('user/dashboard.php');
             } else {
                 $error = "Email atau password salah.";

@@ -3,8 +3,16 @@ session_start();
 require '../config/koneksi.php';
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
-    header("Location: ../user/login.php");
+    header("Location: ../login.php");
 }
+echo "Admin";
+?>
+<a href="../logout.php" class="btn btn-heritage btn-sm">
+                Logout
+            </a>
+<?php
+die();
+?>
 
 $stmt = $pdo->prepare("SELECT visit_date, COUNT(*) as reservations_count FROM reservations GROUP BY visit_date ORDER BY visit_date DESC LIMIT 7");
 $stmt->execute();

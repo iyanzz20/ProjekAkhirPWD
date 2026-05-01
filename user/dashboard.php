@@ -1,4 +1,20 @@
 <?php
+session_start();
+require '../config/koneksi.php';
+
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'user') {
+    header("Location: ../login.php");
+}
+echo "User";
+?>
+<a href="../logout.php" class="btn btn-heritage btn-sm">
+                Logout
+            </a>
+<?php
+die();
+?>
+
+<?php
 require_once "../config/auth_user.php";
 
 $search = trim($_GET['search'] ?? '');

@@ -12,14 +12,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!validateCsrfToken($_POST['csrf_token'] ?? '')) {
         $error = "Token keamanan tidak valid.";
     } else {
-        $name = trim($_POST['name'] ?? '');
+        $nama_lengkap = trim($_POST['nama_lengkap'] ?? '');
         $email = trim($_POST['email'] ?? '');
-        $phone = trim($_POST['phone'] ?? '');
         $password = $_POST['password'] ?? '';
         $confirmPassword = $_POST['confirm_password'] ?? '';
 
-        if ($name === '' || $email === '' || $password === '' || $confirmPassword === '') {
-            $error = "Nama, email, password, dan konfirmasi password wajib diisi.";
+        if ($nama_lengkap === '' || $email === '' || $password === '' || $confirmPassword === '') {
+            $error = "Semua field wajib diisi.";
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error = "Format email tidak valid.";
         } elseif (strlen($password) < 6) {
@@ -27,22 +26,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($password !== $confirmPassword) {
             $error = "Konfirmasi password tidak sesuai.";
         } else {
-            $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ? AND is_deleted = 0 LIMIT 1");
-            $stmt->execute(array($email));
+            $stmt = $pdo->prepare("SELECT id_user FROM users WHERE email = ? AND is_deleted = 0 LIMIT 1");
+            $stmt->execute([$email]);
 
             if ($stmt->fetch()) {
                 $error = "Email sudah terdaftar.";
             } else {
                 $hash = password_hash($password, PASSWORD_DEFAULT);
 
-                $stmt = $pdo->prepare("
-                    INSERT INTO users
-                    (name, email, phone, password, role, created_by)
-                    VALUES (?, ?, ?, ?, 'user', 'system')
-                ");
-                $stmt->execute(array($name, $email, $phone, $hash));
+                try {
+                    $stmt = $pdo->prepare("
+                        INSERT INTO users 
+                        (nama_lengkap, email, password, role, created_by) 
+                        VALUES (?, ?, ?, 'user', 'system')
+                    ");
+                    $stmt->execute([$nama_lengkap, $email, $hash]);
 
-                $success = "Registrasi berhasil. Silakan login.";
+                    $success = "Registrasi berhasil. Silakan login.";
+                } catch (PDOException $e) {
+                    $error = "Terjadi kesalahan sistem: " . $e->getMessage();
+                }
             }
         }
     }
@@ -57,7 +60,6 @@ $csrfToken = generateCsrfToken();
     <meta charset="UTF-8">
     <title>Register - <?= e(APP_NAME); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
@@ -84,17 +86,12 @@ $csrfToken = generateCsrfToken();
 
                     <div class="mb-3">
                         <label class="form-label">Nama Lengkap</label>
-                        <input type="text" name="name" class="form-control" required value="<?= e($_POST['name'] ?? ''); ?>">
+                        <input type="text" name="nama_lengkap" class="form-control" required value="<?= e($_POST['nama_lengkap'] ?? ''); ?>">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Email</label>
                         <input type="email" name="email" class="form-control" required value="<?= e($_POST['email'] ?? ''); ?>">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Nomor WhatsApp</label>
-                        <input type="text" name="phone" class="form-control" value="<?= e($_POST['phone'] ?? ''); ?>">
                     </div>
 
                     <div class="mb-3">
@@ -112,9 +109,6 @@ $csrfToken = generateCsrfToken();
 
                 <p class="text-center mt-4 mb-0">
                     Sudah punya akun? <a href="login.php" class="link-heritage">Login</a>
-                </p>
-                <p class="text-center mt-2 mb-0">
-                    <a href="index.php" class="link-muted">Kembali ke halaman utama</a>
                 </p>
             </div>
         </div>
