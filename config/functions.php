@@ -138,9 +138,9 @@ function getUsedQuota($pdo, $visitDate, $visitTime) {
  */
 function statusLabel($status) {
     $labels = [
-        'pending'   => 'Menunggu Konfirmasi',
-        'confirmed' => 'Sudah Bayar / Valid',
-        'canceled'  => 'Dibatalkan'
+        'pending'   => '(Pending)Menunggu Konfirmasi',
+        'confirmed' => '(Confirmed)Sudah Bayar / Valid',
+        'canceled'  => '(Canceled)Dibatalkan'
     ];
     return $labels[$status] ?? $status;
 }
