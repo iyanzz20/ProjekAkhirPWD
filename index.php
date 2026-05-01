@@ -285,27 +285,27 @@ $name = $_SESSION['name'] ?? '';
                 <div class="rule-list">
                     <div class="rule-item">
                         <span>1</span>
-                        <p>Pengunjung wajib melakukan reservasi sebelum datang.</p>
+                        <p class="my-auto">Pengunjung wajib melakukan reservasi sebelum datang.</p>
                     </div>
 
                     <div class="rule-item">
                         <span>2</span>
-                        <p>Kuota kunjungan dibatasi maksimal 50 orang per jam.</p>
+                        <p class="my-auto">Kuota kunjungan dibatasi maksimal 50 orang per jam.</p>
                     </div>
 
                     <div class="rule-item">
                         <span>3</span>
-                        <p>Pengunjung datang sesuai tanggal dan jam yang telah dipilih.</p>
+                        <p class="my-auto">Pengunjung datang sesuai tanggal dan jam yang telah dipilih.</p>
                     </div>
 
                     <div class="rule-item">
                         <span>4</span>
-                        <p>Pengunjung wajib menjaga kebersihan dan ketertiban area museum.</p>
+                        <p class="my-auto">Pengunjung wajib menjaga kebersihan dan ketertiban area museum.</p>
                     </div>
 
                     <div class="rule-item">
                         <span>5</span>
-                        <p>Konfirmasi pembayaran dilakukan melalui WhatsApp admin.</p>
+                        <p class="my-auto">Konfirmasi pembayaran dilakukan melalui WhatsApp admin.</p>
                     </div>
                 </div>
             </div>
