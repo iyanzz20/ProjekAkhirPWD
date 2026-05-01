@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 01, 2026 at 11:22 AM
+-- Generation Time: May 01, 2026 at 06:25 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -43,6 +43,15 @@ CREATE TABLE `reservations` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `deleted_by` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reservations`
+--
+
+INSERT INTO `reservations` (`id_reservasi`, `id_user`, `tgl_kunjungan`, `jam_kunjungan`, `jumlah_orang`, `total_harga`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`, `deleted_at`, `deleted_by`) VALUES
+(1, 3, '2026-05-02', '08:00:00', 30, '300000.00', 'canceled', '2026-05-01 10:04:38', 'Testing', '2026-05-01 16:09:02', 'system', 1, '2026-05-01 16:09:02', 'Admin'),
+(2, 3, '2026-06-01', '08:00:00', 5, '50000.00', 'canceled', '2026-05-01 13:48:24', 'Testing', '2026-05-01 15:50:13', 'system', 0, NULL, NULL),
+(3, 3, '2026-05-02', '08:00:00', 40, '400000.00', 'confirmed', '2026-05-01 16:00:36', 'Testing', '2026-05-01 16:02:23', 'Admin', 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -99,7 +108,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id_reservasi` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_reservasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
