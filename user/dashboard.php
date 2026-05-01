@@ -160,7 +160,7 @@ $reservations = $stmt->fetchAll();
                 <ul class="pagination justify-content-center">
                     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                         <li class="page-item <?= $i === $page ? 'active' : ''; ?>">
-                            <a class="page-link" href="?page=<?= $i; ?>&search=<?= urlencode($search); ?>"><?= $i; ?></a>
+                            <a class="page-link text-secondary" href="?page=<?= $i; ?>&search=<?= urlencode($search); ?>"><?= $i; ?></a>
                         </li>
                     <?php endfor; ?>
                 </ul>
