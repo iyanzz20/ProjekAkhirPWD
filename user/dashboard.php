@@ -142,7 +142,7 @@ $reservations = $stmt->fetchAll();
                                 </td>
                                 <td class="text-end">
                                     <?php if ($res['status'] === 'pending'): ?>
-                                        <a href="checkout.php?id=<?= $res['id_reservasi']; ?>" class="btn btn-sm btn-success">Bayar</a>
+                                        <a href="payment_instruction.php?id=<?= $res['id_reservasi']; ?>" class="btn btn-sm btn-success">Bayar</a>
                                     <?php else: ?>
                                         <a href="detail_reservasi.php?id=<?= $res['id_reservasi']; ?>" class="btn btn-sm btn-outline-secondary">Detail</a>
                                     <?php endif; ?>
