@@ -52,6 +52,10 @@ function currentUserRole() {
     return $_SESSION['role'] ?? '';
 }
 
+function currentUserEmail() {
+    return $_SESSION['email'] ?? '';
+}
+
 /**
  * Middleware / Auth Guards
  */

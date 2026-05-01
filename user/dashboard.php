@@ -1,42 +1,28 @@
 <?php
 session_start();
-require '../config/koneksi.php';
+require_once '../config/koneksi.php';
+require_once '../config/functions.php';
 
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'user') {
-    header("Location: ../login.php");
-}
-echo "User";
-?>
-<a href="../logout.php" class="btn btn-heritage btn-sm">
-                Logout
-            </a>
-<?php
-die();
-?>
+ensureUserLogin();
 
-<?php
-require_once "../config/auth_user.php";
+updateExpiredReservations($pdo);
 
 $search = trim($_GET['search'] ?? '');
-$page = max((int) ($_GET['page'] ?? 1), 1);
-$limit = 8;
+$page   = max((int) ($_GET['page'] ?? 1), 1);
+$limit  = 5;
 $offset = ($page - 1) * $limit;
 $userId = currentUserId();
 
-$where = "WHERE r.user_id = ? AND r.is_deleted = 0";
-$params = array($userId);
+$where  = "WHERE r.id_user = ? AND r.is_deleted = 0";
+$params = [$userId];
 
 if ($search !== '') {
     $where .= " AND (
-        CONCAT('VRD-', LPAD(r.id, 5, '0')) LIKE ?
-        OR CAST(r.id AS CHAR) LIKE ?
-        OR r.visit_date LIKE ?
+        r.id_reservasi LIKE ? 
+        OR r.tgl_kunjungan LIKE ? 
         OR r.status LIKE ?
     )";
-
     $keyword = '%' . $search . '%';
-
-    $params[] = $keyword;
     $params[] = $keyword;
     $params[] = $keyword;
     $params[] = $keyword;
@@ -66,176 +52,99 @@ $reservations = $stmt->fetchAll();
     <meta charset="UTF-8">
     <title>Dashboard User - <?= e(APP_NAME); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../assets/css/style.css?v=<?= time(); ?>" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
 </head>
 <body class="app-body">
 
 <nav class="navbar navbar-expand-lg navbar-vredeburg sticky-top">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="../index.php">
-            Benteng Vredeburg
-        </a>
-
-        <div class="d-flex gap-2 align-items-center">
-            <span class="small text-muted-custom d-none d-md-inline">
-                Halo, <?= e(currentUserName()); ?>
-            </span>
-
-            <a href="reservation.php" class="btn btn-outline-heritage btn-sm">
-                Reservasi Baru
-            </a>
-
-            <a href="../logout.php" class="btn btn-heritage btn-sm">
-                Logout
-            </a>
+        <a class="navbar-brand fw-bold" href="../index.php">Benteng Vredeburg</a>
+        <div class="d-flex gap-3 align-items-center">
+            <span class="text-white d-none d-md-inline">Halo, <?= e(currentUserName()); ?></span>
+            <a href="../logout.php" class="btn btn-heritage btn-sm">Logout</a>
         </div>
     </div>
 </nav>
 
-<main class="section-padding">
+<main class="py-5">
     <div class="container">
         <?php if (isset($_GET['success'])): ?>
-            <div class="alert alert-success">
-                Reservasi berhasil dibuat. Silakan lakukan konfirmasi pembayaran melalui WhatsApp.
-            </div>
+            <div class="alert alert-success shadow-sm">Reservasi berhasil! Silakan segera lakukan konfirmasi pembayaran via WhatsApp.</div>
         <?php endif; ?>
 
-        <?php if (isset($_GET['cancelled'])): ?>
-            <div class="alert alert-success">
-                Reservasi berhasil dibatalkan.
-            </div>
-        <?php endif; ?>
-
-        <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
             <div>
-                <span class="section-badge mb-3">
-                    Dashboard User
-                </span>
-
-                <h1 class="section-title mb-1">
-                    Riwayat Reservasi
-                </h1>
-
-                <p class="text-muted-custom mb-0">
-                    Pantau status reservasi dan instruksi pembayaran kamu.
-                </p>
+                <span class="section-badge mb-2 d-inline-block">Member Area</span>
+                <h1 class="h3 fw-bold section-title">Riwayat Reservasi</h1>
+                <p class="text-muted-custom mb-0">Pantau status tiket dan jadwal kunjungan Anda.</p>
             </div>
-
-            <a href="reservation.php" class="btn btn-heritage">
-                Buat Reservasi
-            </a>
+            <a href="reservation.php" class="btn btn-heritage">Buat Reservasi Baru</a>
         </div>
 
-        <div class="card-panel mb-4">
+        <!-- Panel Pencarian -->
+        <div class="card-panel mb-4 shadow-sm">
             <form method="GET" class="row g-2">
                 <div class="col-md-10">
-                    <input 
-                        type="text" 
-                        name="search" 
-                        class="form-control" 
-                        placeholder="Cari kode booking, tanggal, atau status" 
-                        value="<?= e($search); ?>"
-                    >
+                    <input type="text" name="search" class="form-control" placeholder="Cari ID, Tanggal (YYYY-MM-DD), atau Status" value="<?= e($search); ?>">
                 </div>
-
                 <div class="col-md-2">
-                    <button class="btn btn-heritage w-100">
-                        Cari
-                    </button>
+                    <button class="btn btn-heritage w-100">Cari</button>
                 </div>
             </form>
         </div>
 
-        <div class="card-panel">
-            <div class="table-responsive">
+        <!-- Tabel Data -->
+        <div class="card-panel shadow-sm">
+            <div class="table-responsive ">
                 <table class="table table-hover align-middle mb-0">
                     <thead>
                         <tr>
-                            <th>Kode</th>
-                            <th>Tanggal</th>
+                            <th>Kode Booking</th>
+                            <th>Tgl Kunjungan</th>
                             <th>Jam</th>
-                            <th>Orang</th>
+                            <th>Jumlah</th>
                             <th>Total</th>
                             <th>Status</th>
-                            <th>Deadline</th>
+                            <th>Batas Bayar</th>
                             <th class="text-end">Aksi</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         <?php if (!$reservations): ?>
                             <tr>
-                                <td colspan="8" class="text-center text-muted-custom py-4">
-                                    Belum ada data reservasi.
+                                <td colspan="8" class="text-center py-5 text-muted-custom">
+                                    Belum ada riwayat reservasi yang ditemukan.
                                 </td>
                             </tr>
                         <?php endif; ?>
 
-                        <?php foreach ($reservations as $reservation): ?>
-                            <?php
-                            $bookingCode = 'KODE-' . str_pad($reservation['id'], 5, '0', STR_PAD_LEFT);
-                            ?>
-
+                        <?php foreach ($reservations as $res): ?>
                             <tr>
-                                <td class="fw-semibold">
-                                    <?= e($bookingCode); ?>
-                                </td>
-
+                                <td class="fw-bold text-dark">#VRE-<?= str_pad($res['id_reservasi'], 5, '0', STR_PAD_LEFT); ?></td>
+                                <td><?= date('d M Y', strtotime($res['tgl_kunjungan'])); ?></td>
+                                <td><?= substr($res['jam_kunjungan'], 0, 5); ?> WIB</td>
+                                <td><?= $res['jumlah_orang']; ?> Orang</td>
+                                <td class="fw-semibold"><?= rupiah($res['total_harga']); ?></td>
                                 <td>
-                                    <?= e(date('d/m/Y', strtotime($reservation['visit_date']))); ?>
-                                </td>
-
-                                <td>
-                                    <?= e(substr($reservation['visit_time'], 0, 5)); ?>
-                                </td>
-
-                                <td>
-                                    <?= e($reservation['total_people']); ?>
-                                </td>
-
-                                <td>
-                                    <?= e(rupiah($reservation['total_price'])); ?>
-                                </td>
-
-                                <td>
-                                    <span class="<?= e(statusBadgeClass($reservation['status'])); ?>">
-                                        <?= e(statusLabel($reservation['status'])); ?>
+                                    <span class="<?= statusBadgeClass($res['status']); ?>">
+                                        <?= statusLabel($res['status']); ?>
                                     </span>
                                 </td>
-
                                 <td>
-                                    <?php if ($reservation['status'] === 'pending'): ?>
-                                        <?= e(date('d/m/Y H:i', strtotime($reservation['payment_deadline']))); ?>
+                                    <?php if ($res['status'] === 'pending'): ?>
+                                        <small class="text-danger fw-bold">
+                                            <?= date('H:i', strtotime($res['created_at'] . ' +2 hours')); ?> WIB
+                                        </small>
                                     <?php else: ?>
-                                        -
+                                        <span class="text-muted">-</span>
                                     <?php endif; ?>
                                 </td>
-
                                 <td class="text-end">
-                                    <?php if ($reservation['status'] === 'pending'): ?>
-                                        <a 
-                                            href="payment_instruction.php?id=<?= e($reservation['id']); ?>" 
-                                            class="btn btn-sm btn-outline-heritage"
-                                        >
-                                            Bayar
-                                        </a>
-
-                                        <a 
-                                            href="cancel_reservation.php?id=<?= e($reservation['id']); ?>" 
-                                            class="btn btn-sm btn-outline-danger" 
-                                            onclick="return confirm('Batalkan reservasi ini?')"
-                                        >
-                                            Batal
-                                        </a>
+                                    <?php if ($res['status'] === 'pending'): ?>
+                                        <a href="checkout.php?id=<?= $res['id_reservasi']; ?>" class="btn btn-sm btn-success">Bayar</a>
                                     <?php else: ?>
-                                        <a 
-                                            href="payment_instruction.php?id=<?= e($reservation['id']); ?>" 
-                                            class="btn btn-sm btn-outline-secondary"
-                                        >
-                                            Detail
-                                        </a>
+                                        <a href="detail_reservasi.php?id=<?= $res['id_reservasi']; ?>" class="btn btn-sm btn-outline-secondary">Detail</a>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -243,24 +152,20 @@ $reservations = $stmt->fetchAll();
                     </tbody>
                 </table>
             </div>
-
-            <?php if ($totalPages > 1): ?>
-                <nav class="mt-4">
-                    <ul class="pagination justify-content-end mb-0">
-                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                            <li class="page-item <?= $i === $page ? 'active' : ''; ?>">
-                                <a 
-                                    class="page-link" 
-                                    href="?page=<?= $i; ?>&search=<?= urlencode($search); ?>"
-                                >
-                                    <?= $i; ?>
-                                </a>
-                            </li>
-                        <?php endfor; ?>
-                    </ul>
-                </nav>
-            <?php endif; ?>
         </div>
+
+        <!-- Pagination -->
+        <?php if ($totalPages > 1): ?>
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li class="page-item <?= $i === $page ? 'active' : ''; ?>">
+                            <a class="page-link" href="?page=<?= $i; ?>&search=<?= urlencode($search); ?>"><?= $i; ?></a>
+                        </li>
+                    <?php endfor; ?>
+                </ul>
+            </nav>
+        <?php endif; ?>
     </div>
 </main>
 
