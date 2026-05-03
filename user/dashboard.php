@@ -75,7 +75,6 @@ $reservations = $stmt->fetchAll();
 
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
             <div>
-                <span class="section-badge mb-2 d-inline-block">Member Area</span>
                 <h1 class="h3 fw-bold section-title">Riwayat Reservasi</h1>
                 <p class="text-muted-custom mb-0">Pantau status tiket dan jadwal kunjungan Anda.</p>
             </div>
