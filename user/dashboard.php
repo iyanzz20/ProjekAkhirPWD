@@ -85,7 +85,7 @@ $reservations = $stmt->fetchAll();
         <div class="card-panel mb-4 shadow-sm">
             <form method="GET" class="row g-2">
                 <div class="col-md-10">
-                    <input type="text" name="search" class="form-control" placeholder="Cari ID, Tanggal (YYYY-MM-DD), atau Status" value="<?= e($search); ?>">
+                    <input type="text" name="search" class="form-control" placeholder="Cari Kode, Tanggal, atau Status" value="<?= e($search); ?>">
                 </div>
                 <div class="col-md-2">
                     <button class="btn btn-heritage w-100">Cari</button>

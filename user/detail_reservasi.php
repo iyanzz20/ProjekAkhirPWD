@@ -27,7 +27,7 @@ if (!$res) {
     redirect('dashboard.php');
 }
 
-$bookingCode = 'VRE-' . str_pad($res['id_reservasi'], 5, '0', STR_PAD_LEFT);
+$bookingCode = 'Kode-' . str_pad($res['id_reservasi'], 3, '0', STR_PAD_LEFT);
 ?>
 
 <!DOCTYPE html>

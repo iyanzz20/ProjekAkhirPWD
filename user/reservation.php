@@ -40,7 +40,6 @@ $minDate = date('Y-m-d', strtotime('+1 day'));
         <?php endif; ?>
 
         <div class="mb-4">
-            <span class="section-badge mb-3">Proses Reservasi</span>
             <h1 class="section-title mb-2">Pilih Jadwal Kunjungan</h1>
             <p class="text-muted-custom mb-0">Satu reservasi berlaku untuk satu jam kunjungan (H+1).</p>
         </div>
@@ -101,7 +100,6 @@ $minDate = date('Y-m-d', strtotime('+1 day'));
                                         <span class="text-muted small">Total Bayar</span>
                                         <h3 id="total_price_text" class="mb-0 fw-bold text-dark"><?= e(rupiah(TICKET_PRICE)); ?></h3>
                                     </div>
-                                    <small class="badge bg-secondary">Real-time</small>
                                 </div>
                             </div>
 
@@ -116,9 +114,7 @@ $minDate = date('Y-m-d', strtotime('+1 day'));
 
                 <div class="col-lg-5">
                     <div class="summary-card sticky-top shadow-sm" style="top: 100px; padding: 20px; background: #fff; border-radius: 12px;">
-                        <span class="section-badge mb-3">Ringkasan</span>
                         <h4 class="fw-bold mb-4">Ringkasan Reservasi</h4>
-
                         <div class="d-flex justify-content-between mb-2">
                             <span class="text-muted">Nama</span>
                             <strong class="text-end"><?= e($name); ?></strong>
