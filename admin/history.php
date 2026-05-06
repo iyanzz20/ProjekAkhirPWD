@@ -99,7 +99,7 @@ $history = $stmt->fetchAll();
                             <th>Jadwal</th>
                             <th>Total</th>
                             <th>Status</th>
-                            <!-- <th>Updated By</th> -->
+                            <th>Updated By</th>
                             <th class="text-end">Aksi</th>
                         </tr>
                     </thead>
@@ -127,14 +127,15 @@ $history = $stmt->fetchAll();
                                         <?= statusLabel($row['status']); ?>
                                     </span>
                                 </td>
-                                <!-- <td>
+                                <td>
                                     <small class="text-muted"><?= e($row['updated_by'] ?? '-'); ?></small>
-                                </td> -->
+                                </td>
                                 <td class="text-end">
                                     <div class="dropdown">
                                         <button class="btn btn-sm btn-light border dropdown-toggle" data-bs-toggle="dropdown">Opsi</button>
                                         <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                             <li><a class="dropdown-item" href="detail_reservasi.php?id=<?= $row['id_reservasi']; ?>">Lihat Detail</a></li>
+                                            <li><a class="dropdown-item" href="edit_reservasi.php?id=<?= $row['id_reservasi']; ?>">Edit Data</a></li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li>
                                                 <a class="dropdown-item text-danger" href="proses_delete.php?id=<?= $row['id_reservasi']; ?>" 
