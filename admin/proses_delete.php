@@ -7,21 +7,17 @@ ensureAdminLogin();
 
 if (isset($_GET['id'])) {
     $id_res = (int)$_GET['id'];
-    $admin_name = currentUserName();
 
     try {
-        $sql = "UPDATE reservations 
-                SET is_deleted = 1, 
-                    deleted_by = ?, 
-                    deleted_at = NOW() 
-                WHERE id_reservasi = ?";
+        $sql = "DELETE FROM reservations WHERE id_reservasi = ?";
         
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$admin_name, $id_res]);
+        $stmt->execute([$id_res]);
 
         header("Location: history.php?msg=deleted");
+        exit;
     } catch (PDOException $e) {
-        die("Gagal menghapus: " . $e->getMessage());
+        die("Gagal menghapus data secara permanen: " . $e->getMessage());
     }
 } else {
     redirect('history.php');
