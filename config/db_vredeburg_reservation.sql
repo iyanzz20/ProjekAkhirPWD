@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 01, 2026 at 06:25 PM
+-- Generation Time: May 08, 2026 at 04:01 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `reservations` (
   `id_reservasi` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
+  `no_telepon` varchar(20) DEFAULT NULL,
   `tgl_kunjungan` date NOT NULL,
   `jam_kunjungan` time NOT NULL,
   `jumlah_orang` int(11) NOT NULL,
@@ -48,10 +49,14 @@ CREATE TABLE `reservations` (
 -- Dumping data for table `reservations`
 --
 
-INSERT INTO `reservations` (`id_reservasi`, `id_user`, `tgl_kunjungan`, `jam_kunjungan`, `jumlah_orang`, `total_harga`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`, `deleted_at`, `deleted_by`) VALUES
-(1, 3, '2026-05-02', '08:00:00', 30, '300000.00', 'canceled', '2026-05-01 10:04:38', 'Testing', '2026-05-01 16:09:02', 'system', 1, '2026-05-01 16:09:02', 'Admin'),
-(2, 3, '2026-06-01', '08:00:00', 5, '50000.00', 'canceled', '2026-05-01 13:48:24', 'Testing', '2026-05-01 15:50:13', 'system', 0, NULL, NULL),
-(3, 3, '2026-05-02', '08:00:00', 40, '400000.00', 'confirmed', '2026-05-01 16:00:36', 'Testing', '2026-05-01 16:02:23', 'Admin', 0, NULL, NULL);
+INSERT INTO `reservations` (`id_reservasi`, `id_user`, `no_telepon`, `tgl_kunjungan`, `jam_kunjungan`, `jumlah_orang`, `total_harga`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`, `deleted_at`, `deleted_by`) VALUES
+(1, 3, '081323322336', '2026-05-02', '08:00:00', 30, '300000.00', 'canceled', '2026-05-01 10:04:38', 'Testing', '2026-05-08 02:01:27', 'system', 1, '2026-05-01 16:09:02', 'Admin'),
+(2, 3, '081323329344', '2026-06-01', '08:00:00', 5, '50000.00', 'canceled', '2026-05-01 13:48:24', 'Testing', '2026-05-08 02:01:23', 'system', 0, NULL, NULL),
+(3, 3, '081323320238', '2026-05-02', '08:00:00', 40, '400000.00', 'confirmed', '2026-05-01 16:00:36', 'Testing', '2026-05-08 02:01:18', 'Admin', 0, NULL, NULL),
+(5, 3, '081323329672', '2026-05-08', '15:00:00', 45, '450000.00', 'confirmed', '2026-05-06 14:25:17', 'Testing', '2026-05-08 02:01:13', 'Admin', 0, NULL, NULL),
+(6, 3, '081323325685', '2026-05-08', '15:00:00', 5, '50000.00', 'canceled', '2026-05-06 14:31:29', 'Testing', '2026-05-08 02:01:09', 'system', 0, NULL, NULL),
+(7, 3, '081323322212', '2026-05-09', '15:00:00', 5, '50000.00', 'confirmed', '2026-05-08 01:44:04', 'Testing', '2026-05-08 01:50:17', 'Admin', 0, NULL, NULL),
+(8, 3, '081323321110', '2026-05-09', '10:00:00', 5, '50000.00', 'pending', '2026-05-08 01:55:04', 'Testing', '2026-05-08 01:58:59', 'Admin', 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -80,7 +85,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id_user`, `nama_lengkap`, `email`, `password`, `role`, `created_at`, `created_by`, `updated_at`, `updated_by`, `is_deleted`, `deleted_at`, `deleted_by`) VALUES
 (1, 'Admin', 'admin@admin.com', '$2y$10$P7hPQq/w4ATC3UDLEpu/tO.tcAk6qIuCix6nmGPelkRbbNmFmH7wm', 'admin', '2026-05-01 01:34:54', 'system', '2026-05-01 09:20:04', NULL, 0, NULL, NULL),
-(3, 'Testing', 'tes@tes.com', '$2y$10$mCSQSWjugum9zABaNwcFPefU0RDysPfx75P4oXcgrbsmG9Uk9PNbu', 'user', '2026-05-01 09:17:22', 'system', NULL, NULL, 0, NULL, NULL);
+(3, 'Testing Lengkap', 'tes@tes.com', '$2y$10$JwxUFWKdSBBDsFoejdK4kueijq.I8lZiVatcCZFllgV9dZEEvuVyO', 'user', '2026-05-01 09:17:22', 'system', '2026-05-08 01:29:39', 'Testing Lengkap', 0, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -108,7 +113,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id_reservasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_reservasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`
