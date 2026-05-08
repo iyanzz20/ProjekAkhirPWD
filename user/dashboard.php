@@ -63,6 +63,7 @@ $reservations = $stmt->fetchAll();
         <div class="d-flex gap-3 align-items-center">
             <span class="text-white d-none d-md-inline">Halo, <?= e(currentUserName()); ?></span>
             <a href="../logout.php" class="btn btn-heritage btn-sm">Logout</a>
+            <a href="edit_profile.php" class="btn btn-outline-heritage btn-sm">Edit Profil</a>
         </div>
     </div>
 </nav>
