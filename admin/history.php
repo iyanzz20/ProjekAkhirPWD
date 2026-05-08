@@ -19,8 +19,10 @@ if ($search !== '') {
         r.id_reservasi LIKE ? 
         OR u.nama_lengkap LIKE ? 
         OR r.tgl_kunjungan LIKE ?
+        OR r.no_telepon LIKE ?
     )";
     $keyword = '%' . $search . '%';
+    $params[] = $keyword;
     $params[] = $keyword;
     $params[] = $keyword;
     $params[] = $keyword;
@@ -96,6 +98,7 @@ $history = $stmt->fetchAll();
                         <tr>
                             <th>Kode</th>
                             <th>Pengunjung</th>
+                            <th>CP</th>
                             <th>Jadwal</th>
                             <th>Total</th>
                             <th>Status</th>
@@ -116,6 +119,9 @@ $history = $stmt->fetchAll();
                                 <td>
                                     <div class="fw-bold"><?= e($row['nama_lengkap']); ?></div>
                                     <div class="small text-muted"><?= e($row['email']); ?></div>
+                                </td>
+                                <td>
+                                    <div class="fw-bold"><?= e($row['no_telepon']); ?></div>
                                 </td>
                                 <td>
                                     <div class="small fw-bold"><?= date('d/m/Y', strtotime($row['tgl_kunjungan'])); ?></div>

@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_res  = (int)$_POST['id_reservasi'];
     $id_user = currentUserId();
     $tgl     = $_POST['tgl_kunjungan'];
+    $no_telp = $_POST['no_telepon'];
     $jam     = $_POST['jam_kunjungan'];
     $pax     = (int)$_POST['jumlah_orang'];
     $total   = $pax * TICKET_PRICE;
@@ -39,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "UPDATE reservations SET 
                 tgl_kunjungan = ?, 
                 jam_kunjungan = ?, 
+                no_telepon = ?,
                 jumlah_orang = ?, 
                 total_harga = ?, 
                 updated_at = NOW(), 
@@ -47,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 WHERE id_reservasi = ? AND id_user = ?";
         
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$tgl, $jam, $pax, $total, currentUserName(), $id_res, $id_user]);
+        $stmt->execute([$tgl, $jam, $no_telp, $pax, $total, currentUserName(), $id_res, $id_user]);
 
         header("Location: dashboard.php?msg=updated");
     } catch (PDOException $e) {

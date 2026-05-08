@@ -65,6 +65,13 @@ $minDate = date('Y-m-d', strtotime('+1 day'));
                             </div>
 
                             <div class="col-md-6">
+                                <label class="form-label">Contact Person</label>
+                                <input type="text" name="no_telepon" id="no_telepon" 
+                                       class="form-control" 
+                                       value="<?= $res['no_telepon']; ?>" required>
+                            </div>
+
+                            <div class="col-md-6">
                                 <label class="form-label">Jam Kunjungan Baru</label>
                                 <select name="jam_kunjungan" id="jam_kunjungan" class="form-select" required>
                                     <?php foreach (getOperationalTimes() as $time): ?>

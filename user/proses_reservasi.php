@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $id_user = currentUserId();
+    $no_telepon = trim($_POST['no_telepon']);
     $tgl     = $_POST['tgl_kunjungan'];
     $jam     = $_POST['jam_kunjungan'];
     $pax     = (int)$_POST['jumlah_orang'];
@@ -27,12 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         $stmt = $pdo->prepare("
-            INSERT INTO reservations (id_user, tgl_kunjungan, jam_kunjungan, jumlah_orang, total_harga, status, created_by)
-            VALUES (?, ?, ?, ?, ?, 'pending', ?)
+            INSERT INTO reservations (id_user, no_telepon, tgl_kunjungan, jam_kunjungan, jumlah_orang, total_harga, status, created_by)
+            VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)
         ");
         
         $stmt->execute([
             $id_user, 
+            $no_telepon,
             $tgl, 
             $jam, 
             $pax, 

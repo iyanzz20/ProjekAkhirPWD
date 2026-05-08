@@ -92,6 +92,16 @@ $bookingCode = 'VRE-' . str_pad($res['id_reservasi'], 5, '0', STR_PAD_LEFT);
 
                         <div class="col-md-6">
                             <div class="detail-box shadow-sm">
+                                <span>Kontak WhatsApp</span>
+                                <h5 class="fw-bold mb-1 mt-2"><?= e($res['no_telepon']); ?></h5>
+                                <a href="https://wa.me/<?= e($res['no_telepon']); ?>" target="_blank" class="btn btn-sm btn-success mt-2">
+                                Chat Pengunjung
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="detail-box shadow-sm">
                                 <span>Waktu Kunjungan</span>
                                 <h5 class="fw-bold mb-1 mt-2"><?= date('d F Y', strtotime($res['tgl_kunjungan'])); ?></h5>
                                 <p class="text-muted mb-0 small"><?= substr($res['jam_kunjungan'], 0, 5); ?> WIB (Durasi 1 Jam)</p>

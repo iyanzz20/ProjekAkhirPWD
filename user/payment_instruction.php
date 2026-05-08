@@ -95,6 +95,12 @@ $waLink = "https://wa.me/" . ADMIN_WHATSAPP . "?text=" . urlencode($message);
                         </div>
                         <div class="col-md-6">
                             <div class="p-3 border rounded-3">
+                                <span class="text-muted small d-block">Nomor WhatsApp</span>
+                                <strong><?= e($reservation['no_telepon']); ?></strong>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded-3">
                                 <span class="text-muted small d-block">Jadwal Kunjungan</span>
                                 <strong><?= date('d/m/Y', strtotime($reservation['tgl_kunjungan'])); ?> | <?= substr($reservation['jam_kunjungan'], 0, 5); ?> WIB</strong>
                             </div>

@@ -55,6 +55,10 @@ $csrfToken = generateCsrfToken();
             <div class="card-panel shadow-sm">
                 <div class="row g-3">
                     <div class="col-md-4">
+                        <label class="form-label">Contact Person</label>
+                        <input type="text" name="no_telepon" id="no_telepon" class="form-control" value="<?= $res['no_telepon']; ?>" required>
+                    </div>
+                    <div class="col-md-4">
                         <label class="form-label">Tanggal Kunjungan</label>
                         <input type="date" name="tgl_kunjungan" id="tgl_kunjungan" class="form-control" value="<?= $res['tgl_kunjungan']; ?>" required>
                     </div>

@@ -89,6 +89,12 @@ $minDate = date('Y-m-d', strtotime('+1 day'));
                                 <small id="people_warning" class="text-danger d-none">Melebihi sisa kuota!</small>
                             </div>
 
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Nomor WhatsApp (Aktif)</label>
+                                <input type="text" name="no_telepon" class="form-control" placeholder="Contoh: 081234567890" required>
+                                <small class="text-muted-custom">Admin akan menghubungi nomor ini jika ada kendala jadwal.</small>
+                            </div>
+
                             <div class="col-md-6">
                                 <label class="form-label">Harga Tiket per Orang</label>
                                 <input type="text" class="form-control bg-light" value="<?= e(rupiah(TICKET_PRICE)); ?>" readonly>

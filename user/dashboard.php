@@ -21,8 +21,10 @@ if ($search !== '') {
         r.id_reservasi LIKE ? 
         OR r.tgl_kunjungan LIKE ? 
         OR r.status LIKE ?
+        OR r.no_telepon LIKE ?
     )";
     $keyword = '%' . $search . '%';
+    $params[] = $keyword;
     $params[] = $keyword;
     $params[] = $keyword;
     $params[] = $keyword;
@@ -101,6 +103,7 @@ $reservations = $stmt->fetchAll();
                     <thead>
                         <tr>
                             <th>Kode Booking</th>
+                            <th>CP</th>
                             <th>Tgl Kunjungan</th>
                             <th>Jam</th>
                             <th>Jumlah</th>
@@ -122,6 +125,7 @@ $reservations = $stmt->fetchAll();
                         <?php foreach ($reservations as $res): ?>
                             <tr>
                                 <td class="fw-bold text-dark">#VRE-<?= str_pad($res['id_reservasi'], 5, '0', STR_PAD_LEFT); ?></td>
+                                <td><?= $res['no_telepon']; ?></td>
                                 <td><?= date('d M Y', strtotime($res['tgl_kunjungan'])); ?></td>
                                 <td><?= substr($res['jam_kunjungan'], 0, 5); ?> WIB</td>
                                 <td><?= $res['jumlah_orang']; ?> Orang</td>

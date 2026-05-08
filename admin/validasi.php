@@ -87,6 +87,7 @@ $pendingList = $stmt->fetchAll();
                             <th>Waktu Pesan</th>
                             <th>Kode</th>
                             <th>Nama Pengunjung</th>
+                            <th>CP</th>
                             <th>Jadwal Kunjungan</th>
                             <th>Total</th>
                             <th class="text-center">Aksi</th>
@@ -106,6 +107,9 @@ $pendingList = $stmt->fetchAll();
                                 <td>
                                     <div class="fw-bold"><?= e($row['nama_lengkap']); ?></div>
                                     <div class="small text-muted"><?= e($row['email']); ?></div>
+                                </td>
+                                <td>
+                                    <div class="fw-bold"><?= e($row['no_telepon']); ?></div>
                                 </td>
                                 <td>
                                     <div class="small fw-bold"><?= date('d M Y', strtotime($row['tgl_kunjungan'])); ?></div>

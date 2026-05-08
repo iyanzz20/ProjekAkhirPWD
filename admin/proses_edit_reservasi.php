@@ -7,6 +7,7 @@ ensureAdminLogin();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_res  = (int)$_POST['id_reservasi'];
+    $no_telp     = $_POST['no_telepon'];
     $tgl     = $_POST['tgl_kunjungan'];
     $jam     = $_POST['jam_kunjungan'];
     $pax     = (int)$_POST['jumlah_orang'];
@@ -26,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $sql = "UPDATE reservations SET 
                 tgl_kunjungan = ?, 
+                no_telepon = ?, 
                 jam_kunjungan = ?, 
                 jumlah_orang = ?, 
                 total_harga = ?, 
@@ -35,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 WHERE id_reservasi = ?";
         
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$tgl, $jam, $pax, $total, $status, currentUserName(), $id_res]);
+        $stmt->execute([$tgl, $no_telp, $jam, $pax, $total, $status, currentUserName(), $id_res]);
 
         header("Location: history.php?msg=updated");
     } catch (PDOException $e) {
